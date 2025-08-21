@@ -16,9 +16,14 @@ const headers = {
     referer,
     cookie
 };
-const response = submitForm(`https://manga.bilibili.com/twirp/manage.v1.Manage/UploadImage?device=pc&platform=web&creator_group=2`, formData, headers);
-const result = JSON.parse(atob(response)).data.url
+const {text} = request('POST', `https://manga.bilibili.com/twirp/manage.v1.Manage/UploadImage?device=pc&platform=web&creator_group=2`, formData, headers);
+
+const result = JSON.parse(text).data.url
+if (!result) {
+    throw new Error('上传失败')
+}
 print("上传成功,图片地址: ", result)
 //在最后一行填写图片地址表达式
 result;
+
 

@@ -11,8 +11,11 @@ const headers = {
     referer,
     cookie,
 };
-const responseBase64 = submitForm("https://docs.qq.com/api/docsdata/image/upload", formData, headers);
-const data = JSON.parse(atob(responseBase64));
+const {text} = request("POST", "https://docs.qq.com/api/docsdata/image/upload", formData, headers);
+if (!text) {
+    throw new Error(`上传失败: ${text}`)
+}
+const data = JSON.parse(text);
 const result = data.url.split('?')[0];
 print(`上传成功: ${result}`)
 //在最后一行填写图片地址表达式
